@@ -126,6 +126,17 @@ export function preservedCoreDrift(sourceCore, resultCore, fields) {
   return null;
 }
 
+/**
+ * Avito rewrites `geoCoords` while `searchRadius` is absent (F-103). The point
+ * constrains a search only together with a radius; the radius itself must never
+ * appear, disappear or change between carriers.
+ */
+export function preservedSearchPointDrift(sourceCore, resultCore) {
+  if (!sameValues(sourceCore.searchRadius, resultCore.searchRadius)) return 'searchRadius';
+  if (normalizeValues(sourceCore.searchRadius).length === 0) return null;
+  return sameValues(sourceCore.geoCoords, resultCore.geoCoords) ? null : 'geoCoords';
+}
+
 /** The ID of the first `params[...]` entry the response changed, or null. */
 export function preservedParamsDrift(sourceParamEntries, resultParams) {
   for (const [attrId, value] of sourceParamEntries) {

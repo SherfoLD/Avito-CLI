@@ -1,0 +1,19 @@
+{
+  "observedAt": "2026-09-22",
+  "context": "live POCO phone search in Moscow, then model filter Poco X6 Pro",
+  "sourceSearchCore": {
+    "geoCoords": "array of two numbers, values omitted",
+    "searchRadius": null
+  },
+  "itemsApiSearchCore": {
+    "geoCoords": "different array of two numbers, values omitted",
+    "searchRadius": null
+  },
+  "reproduction": [
+    "search without an explicit location stopped with: Avito changed the preserved search point",
+    "search with an explicit Moscow location returned the mobile-phone catalog and its live filter schema",
+    "apply-filters with params[110617]=18792946 (Poco X6 Pro) stopped with: Avito changed preserved search field geoCoords"
+  ],
+  "control": "A text search for Poco X6 Pro with the same explicit location returned listings, and three get-item calls decoded the model from their attributes.",
+  "follows": "geoCoords is not an applied search constraint when searchRadius is absent; a radius change remains drift, and coordinates remain exact while a radius is active."
+}

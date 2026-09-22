@@ -395,6 +395,22 @@ check('geo the caller did not touch must come back unchanged', async () => {
     `an invented point was accepted: ${moved && moved.message}`);
 });
 
+check('coordinates without a radius are metadata, while the radius remains a postcondition', async () => {
+  const source = catalogState({ core: { geoCoords: [55.75, 37.61], searchRadius: null } });
+  const metadata = search(routes(
+    apiRoute({ core: { geoCoords: [59.93, 30.31], searchRadius: null } }),
+    hop2({ state: source }),
+  ));
+  await metadata.answer;
+
+  const narrowed = await failureOf(() => search(routes(
+    apiRoute({ core: { geoCoords: [59.93, 30.31], searchRadius: 5 } }),
+    hop2({ state: source }),
+  )).answer);
+  assert(narrowed != null && /preserved search point/.test(narrowed.message),
+    `an invented radius was accepted: ${narrowed && narrowed.message}`);
+});
+
 // ── the page, whole ──────────────────────────────────────────────────────────
 
 // Avito fixes the page at 50 listings and offers no page-size parameter, so a full page

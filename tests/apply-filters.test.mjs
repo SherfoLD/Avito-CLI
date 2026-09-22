@@ -450,6 +450,23 @@ check('the geo of the source URL is carried into the request and checked as pres
   )).answer);
   assert(failure != null && /preserved search field metroId/.test(failure.message),
     `a dropped metro must be drift: ${failure && failure.message}`);
+
+  const droppedRadius = await failureOf(() => apply(routes(
+    ssrRoute(ssrState({ core: geo })),
+    apiRoute(apiState({ core: { ...geo, searchRadius: null } })),
+  )).answer);
+  assert(droppedRadius != null && /preserved search field searchRadius/.test(droppedRadius.message),
+    `a dropped radius was accepted: ${droppedRadius && droppedRadius.message}`);
+});
+
+check('coordinates with no radius may be normalized without changing the search', async () => {
+  const sourcePoint = { geoCoords: [55.760256, 37.611446], searchRadius: null };
+  const resultPoint = { geoCoords: [55.755864, 37.617698], searchRadius: null };
+  const answer = await apply(routes(
+    ssrRoute(ssrState({ core: sourcePoint })),
+    apiRoute(apiState({ core: resultPoint })),
+  )).answer;
+  assert(answer.items.length === 1, 'the applied filter did not return its listing');
 });
 
 check('an items API rate limit or challenge stops as access', async () => {

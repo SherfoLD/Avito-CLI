@@ -44,6 +44,7 @@ import {
   itemsApiUrl,
   preservedCoreDrift,
   preservedParamsDrift,
+  preservedSearchPointDrift,
   sealItemsApiUrl,
 } from '../site/items.mjs';
 import { idString, searchUrl as searchUrlField, text, z } from '../runtime/schema.mjs';
@@ -508,7 +509,7 @@ function assertFiltersApplied(selections, resultCore, resultFilters) {
 function preservedCoreFields(shortSelections) {
   const preserved = [
     'locationId', 'verticalCategoryId', 'rootCategoryId', 'categoryId', 'query',
-    'metroId', 'districtId', 'geoCoords', 'searchRadius',
+    'metroId', 'districtId',
   ];
   for (const [key, descriptor] of Object.entries(SHORT_KEYS)) {
     if (shortSelections.has(key)) continue;
@@ -613,6 +614,10 @@ export default defineCommand({
     const driftedField = preservedCoreDrift(sourceCore, resultCore, preservedCoreFields(shortSelections));
     if (driftedField) {
       throw new CommandExecutionError(`Avito changed preserved search field ${driftedField}`);
+    }
+    const driftedPointField = preservedSearchPointDrift(sourceCore, resultCore);
+    if (driftedPointField) {
+      throw new CommandExecutionError(`Avito changed preserved search field ${driftedPointField}`);
     }
     if (Number(resultCore.page) !== 1) {
       throw new CommandExecutionError('Avito returned an unexpected page');

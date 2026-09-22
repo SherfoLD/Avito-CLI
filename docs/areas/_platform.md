@@ -1000,6 +1000,16 @@ by hand, and held in step with the schema by `npm run check:commands` (D-053).
   same-origin context a carrier needs is there, and it costs one render of the
   lightest page on the origin (D-081).
 
+- **F-103 — `geoCoords` without `searchRadius` is mutable metadata, not an
+  applied point search.** On 2026-09-22, the SSR document and items API both
+  carried a pair of coordinates and a null radius for a Moscow POCO search, but
+  the pairs differed. The same happened while applying the live `Poco X6 Pro`
+  model filter. With no radius the listings remained a city search; treating the
+  point as preserved stopped both ordinary `search` and `apply-filters`. A radius
+  still has to survive exactly, and while it is present its coordinates do too.
+  Anonymised carrier comparison:
+  `evidence/search-point-without-radius-20260922.json`.
+
 ## Risks
 
 - Browser-side IP blocks (`Доступ ограничен: проблема с IP`, hCaptcha) and `429`

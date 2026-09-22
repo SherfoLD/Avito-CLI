@@ -41,6 +41,7 @@ import {
   itemsApiUrl,
   preservedCoreDrift,
   preservedParamsDrift,
+  preservedSearchPointDrift,
   sealItemsApiUrl,
 } from '../site/items.mjs';
 import {
@@ -346,11 +347,7 @@ function assertSearchApplied(sourceCore, resultCore, refinement) {
     ) {
       throw new CommandExecutionError('Avito changed the preserved geo selection');
     }
-    if (
-      !refinement.radiusRequested
-      && !(sameValues(sourceCore.geoCoords, resultCore.geoCoords)
-        && sameValues(sourceCore.searchRadius, resultCore.searchRadius))
-    ) {
+    if (!refinement.radiusRequested && preservedSearchPointDrift(sourceCore, resultCore)) {
       throw new CommandExecutionError('Avito changed the preserved search point');
     }
   }

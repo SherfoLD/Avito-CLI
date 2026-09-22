@@ -1,16 +1,18 @@
 # State
 
-Updated: 2026-08-20
+Updated: 2026-09-22
 
 Facts only: what works, what does not, and why. The future is in [PLAN.md](PLAN.md).
 How each command is built is in its domain file, [docs/areas/](areas/).
 
 ## Commands
 
-Ten commands, all read-only. `npm run check` is green; the offline suite is 246
-checks across eighteen suites. Nine expectations last passed live against Avito on
-2026-08-19 and `get-filters` on 2026-08-20; the four listing ones have grown a
-rule since (D-077) that has not been run live yet. Persistent search routing was
+Ten commands, all read-only. `npm run check` is green; the offline suite is 248
+checks across eighteen suites. `search` and `apply-filters` passed their strict
+live expectations on 2026-09-22. The consumer path also passed live that day:
+an unlocated `poco` search landed in Moscow, Xiaomi opened the dependent model
+filter, `Poco X6 Pro` returned 50 listings, and one listing agreed with
+`get-item` on ID, title, price and URL (F-103). Persistent search routing was
 verified live on 2026-08-20: two searches held two tabs, both URLs reacquired
 their own tab, and a URL returned by `apply-filters` became an alias without a
 third tab (D-079, F-098). Dead-tab replacement and idle shutdown remain open.
@@ -75,10 +77,10 @@ draws its own gap between 1000 ms and 2500 ms, there is nothing outside
 
 | Command | Domain | Strict live verify |
 |---|---|---|
-| `search` | [search](areas/search.md) | 2026-08-19 |
+| `search` | [search](areas/search.md) | 2026-09-22 |
 | `get-page` | [search](areas/search.md) | 2026-08-19 |
 | `get-filters` | [filters](areas/filters.md) | 2026-08-20 |
-| `apply-filters` | [filters](areas/filters.md) | 2026-08-19 |
+| `apply-filters` | [filters](areas/filters.md) | 2026-09-22 |
 | `get-categories` | [categories](areas/categories.md) | 2026-08-19 |
 | `move-category` | [categories](areas/categories.md) | 2026-08-19 |
 | `get-location` | [geo](areas/geo.md) | 2026-08-19 |
